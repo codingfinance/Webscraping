@@ -85,14 +85,14 @@ time_meridiem = time_meridiem.reshape(int(len(time_meridiem) / 4) , 4)
 
 dep_time_origin = [i + str(j) for i,j in zip(dep_times[:,0], time_meridiem[:,0])]
 
-dep_time_destination = [i + str(j) for i,j in zip(dep_times[:,1], time_meridiem[:,2])] 
+dep_time_destination = [i + str(j) for i,j in zip(dep_times[:,1], time_meridiem[:,2])]
 
-                                                  
+
 arr_time_destination = [i + str(j) for i,j in zip(arr_times[:,0], time_meridiem[:,1])]
 
 arr_time_origin = [i + str(j) for i,j in zip(arr_times[:,1], time_meridiem[:,3])]
 
-                                                  
+
 
 # =============================================================================
 # Get Price data
@@ -116,22 +116,10 @@ df = pd.DataFrame({'origin' : origin,
                   'arr_time_destination':arr_time_destination,
                   'dep_time_destination':dep_time_destination,
                   'arr_time_origin':arr_time_origin,
-                  'price':price}) 
+                  'price':price})
 
 
 # =============================================================================
 # Credit -> Gregor Hesse https://towardsdatascience.com/scraping-flight-data-using-python-e71b97e859d3
 # =============================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
+# =============================================================================
