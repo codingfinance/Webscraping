@@ -3,7 +3,6 @@
 """
 Created on Fri Aug 16 18:55:16 2019
 
-@author: yoda
 """
 
 import pandas as pd
@@ -15,38 +14,38 @@ import zipfile
 def get_fama_french():
     # Web url
     ff_url = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
-    
+
     # Download the file and save it
     # We will name it fama_french.zip file
-    
+
     urllib.request.urlretrieve(ff_url,'fama_french.zip')
     zip_file = zipfile.ZipFile('fama_french.zip', 'r')
-    
+
     # Next we extact the file data
-    
+
     zip_file.extractall()
-    
+
     # Make sure you close the file after extraction
-    
+
     zip_file.close()
-    
+
     # Now open the CSV file
-    
+
     ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows = 3, index_col = 0)
     # We want to find out the row with NULL value
     # We will skip these rows
-    
+
     ff_row = ff_factors.isnull().any(1).nonzero()[0][0]
-    
+
     # Read the csv file again with skipped rows
     ff_factors = pd.read_csv('F-F_Research_Data_Factors.csv', skiprows = 3, nrows = ff_row, index_col = 0)
-    
+
     # Format the date index
     ff_factors.index = pd.to_datetime(ff_factors.index, format= '%Y%m')
-    
+
     # Format dates to end of month
     ff_factors.index = ff_factors.index + pd.offsets.MonthEnd()
-    
+
     # Convert from percent to decimal
     ff_factors = ff_factors.apply(lambda x: x/ 100)
     return ff_factors
@@ -68,20 +67,20 @@ price_data = price_data.loc[:ff_last]
 print(price_data.tail())
 
 def get_return_data(price_data, period = "M"):
-    
+
     # Resample the data to monthly price
     price = price_data.resample(period).last()
-    
+
     # Calculate the percent change
     ret_data = price.pct_change()[1:]
-    
+
     # convert from series to DataFrame
     ret_data = pd.DataFrame(ret_data)
-    
+
     # Rename the Column
     ret_data.columns = ['portfolio']
     return ret_data
-    
+
 ret_data = get_return_data(price_data, "M")
 print(ret_data.tail())
 
@@ -112,16 +111,3 @@ def run_reg_model(ticker,start,end):
 
 ggrax_model = run_reg_model("GGRAX", start = "1999-05-01", end = "2019-06-30")
 print(ggrax_model)
-
-
-
-
-
-
-
-
-
-
-
-
-    
